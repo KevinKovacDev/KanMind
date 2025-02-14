@@ -1,0 +1,329 @@
+/* Buttons */
+
+.std_btn {
+    cursor: pointer;
+    border: none;
+    border-radius: var(--btn-rad);
+    padding: var(--btn-pad);
+    white-space: nowrap;
+}
+
+.std_btn_disabled{
+    cursor: default !important;
+    background-color: rgb(121, 121, 121) !important;
+}
+
+.btn_prime {
+    background-color: var(--btn-prime-color);
+    transition: all 0.3s ease;
+    color: var(--btn-prime-font-color);
+}
+
+.btn_prime:hover {
+    background-color: var(--btn-prime-hover-color);
+}
+
+.btn_prime:active {
+    background-color: var(--btn-prime-active-color);
+}
+
+
+
+.btn_secondary {
+    border: var(--btn-secondary-border);
+    background-color: var(--btn-secondary-color);
+    transition: all 0.3s ease;
+    color: var(--btn-secondary-font-color);
+}
+
+.btn_secondary:hover {
+    background-color: var(--btn-secondary-hover-color);
+    color: var(--btn-prime-font-color);
+}
+
+.btn_secondary:active {
+    background-color: var(--btn-secondary-active-color);
+}
+
+
+.btn_third {
+    border: var(--btn-third-border);
+    background-color: var(--btn-third-color);
+    transition: all 0.3s ease;
+    color: var(--btn-third-font-color);
+}
+
+.btn_third:hover {
+    background-color: var(--btn-third-hover-color);
+    color: var(--btn-prime-font-color);
+}
+
+.btn_third:active {
+    background-color: var(--btn-third-active-color);
+}
+
+
+
+
+
+.card{
+    background-color: var(--card-bg-color);
+    border: var(--card-border);
+    padding: var(--card-pad);
+    border-radius: var(--card-rad);
+}
+
+.card_title{
+    width: 100%;
+    text-align: start;
+    color: var(--font_white_color);
+}
+
+.card_header_w_btn > .card_title{
+    width: unset;
+}
+
+.card_header_w_btn{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.responsive-table {
+    width: 100%;
+}
+
+.responsive-table th,
+.responsive-table td {
+    padding: var(--card-pad);
+    color: var(--font_white_color);
+    text-align: left;
+    /* display: inline-flex; */
+    gap: 4px;
+}
+
+.responsive-table td.title {
+    font-weight: bold !important;
+    text-align: left;
+}
+
+
+@media (max-width: 1024px) {
+    .responsive-table th,
+.responsive-table td {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+    .responsive-table thead {
+        display: none; 
+    }
+
+    .responsive-table tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        padding: var(--btn-pad);
+        margin-bottom: 16px;
+    }
+
+    .responsive-table td.title {
+        width: 100%; 
+        padding: var(--btn-pad);
+        font-weight: bold !important;
+    }
+
+    .responsive-table td:not(.title) {
+        /* flex: 1; */
+        text-align: left;
+        padding: var(--btn-pad);
+    }
+}
+
+
+.profile_circle{
+    height: 32px;
+    width: 32px;
+    background-color: var(--font-prime-color);
+    border: 1px solid var(--font_sec_color);
+    color: var(--font_dark_color);
+    border-radius: 100%;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.link{
+    color: var(--link-color);
+}
+
+.link:hover{
+    color: var(--link-hover-color);
+}
+
+
+
+.priority-badge {
+    width: 24px;  
+    height: 24px;
+    border-radius: 50%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.priority-badge::before {
+    content: "";
+    position: absolute;
+    width: 14px;  
+    height: 14px;
+    background-size: cover;
+    background-position: center;
+}
+
+
+.priority-badge[priority="low"] {
+    background-color: var(--prio-color-low);
+}
+
+.priority-badge[priority="low"]::before {
+    background-image: url("../../assets/icons/low_prio.svg");
+}
+
+.priority-badge[priority="medium"] {
+    background-color: var(--prio-color-medium);
+}
+
+.priority-badge[priority="medium"]::before {
+    background-image: url("../../assets/icons/medium_prio.svg");
+}
+
+.priority-badge[priority="high"] {
+    background-color: var(--prio-color-high);
+}
+
+.priority-badge[priority="high"]::before {
+    background-image: url("../../assets/icons/high_prio.svg");
+}
+
+
+
+
+
+
+
+
+.switch {
+    width: 180px;
+    height: 32px;
+    background: var(--btn-secondary-color);
+    border-radius: calc(var(--btn-rad) * 2);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: var(--btn-secondary-border);
+}
+
+.switch::after,
+.switch::before {
+    position: absolute;
+    width: 50%;
+    text-align: center;
+    color: var(--font-prime-color);
+    font-size: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.switch::before {
+    content: "Assigned";
+    left: 0%;
+}
+
+.switch::after {
+    content: "To Review";
+    right: 0%;
+}
+
+.switch-button {
+    width: 50%;
+    height: 100%;
+    background: var(--btn-prime-color);
+    border-radius: var(--btn-rad);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+
+.switch-button::after,
+.switch-button::before {
+    position: absolute;
+    width: 200%;
+    text-align: center;
+    color: var(--btn-prime-font-color);
+    font-size: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease-in-out;
+}
+
+.switch-button::before {
+    content: "To Review";
+    left: 50%;
+    z-index: 1;
+}
+
+.switch-button::after {
+    content: "Assigned";
+    right: -50%;
+}
+
+/* Zustand: AN */
+.switch.active .switch-button {
+    left: 50%;
+}
+
+.switch.active .switch-button::before {
+    left: -50%;
+    transition: all 0.3s ease-in-out;
+}
+
+.switch.active .switch-button::after {
+    right: 50%;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+
+.arrow_list {
+    list-style: none;
+    padding-left: 16px; 
+}
+
+.arrow_list li {
+    position: relative;
+    padding-left: 25px; 
+}
+
+.arrow_list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px; 
+    height: 16px;
+    background: url('../../assets/icons/arrow_forward.svg') no-repeat center;
+    background-size: contain;
+}
