@@ -14,11 +14,15 @@
     <link rel="stylesheet" href="./dashboard.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./dashboard.js"></script>
+    <script src="../../shared/js/config.js"></script>
+    <script src="../../shared/js/auth.js"></script>
     <script src="../../shared/js/ui_helper.js"></script>
+    <script src="../../shared/js/api.js"></script>
     <script src="../../shared/js/header.js"></script>
+    <script src="./dashboard.js"></script>
+
 </head>
-<body onload="drawWaveChart(); drawPieChart(); setHeader()">
+<body onload="init(); setHeader()">
     <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset=""> <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div></header>
     <main class="w_full">
         
@@ -29,22 +33,22 @@
                     <h2 class="card_title">Tasks Resolved on time</h2>
                     <figure class="wavechart_container">
                         <canvas class="wavechart" id="waveChart"></canvas>
-                        <!-- <figcaption>Fortschrittsdiagramm für erledigte Aufgaben</figcaption> -->
+                        <!-- <figcaption></figcaption> -->
                     </figure>
                     
                 </article>
                 <article class="card stat-card d_flex_sc_gl f_d_c">
                     <h2 class="card_title d_flex_sc_gm">
-                        <img src="../../assets/icons/red_high_prio.svg" alt="">Urgent to do
+                        <img src="../../assets/icons/high_prio_colored.svg" alt="">Urgent to do
                     </h2>
                     <section class="d_flex_cs_gm d_sb f_d_r w_full">
                         <div class="card_content card_content_left d_flex_cc_gm">
-                            <p class="font_white_color fontw_bold fs_l">2</p>
+                            <p class="font_white_color fontw_bold fs_l" id="high_prio_count">n/a</p>
                             <p class="font_white_color">Task</p>
                         </div>
                         <div class="divider"></div>
                         <div class="card_content d_flex_cs_gm">
-                            <p class="font_prime_color fontw_bold fs_l">February 2, 2025</p>
+                            <p class="font_prime_color fontw_bold fs_l" id="upcoming_deadline">n/a</p>
                             <p class="font_white_color">Upcoming deadline</p>
                         </div>
                     </section>
@@ -52,14 +56,14 @@
                 <article class="card stat-card d_flex_sc_gl f_d_c">
                     <h2 class="card_title">Your Tasks</h2>
                     <div class="card_content d_flex_cc_gm">
-                        <p class="font_white_color fontw_bold fs_l">2</p>
+                        <p class="font_white_color fontw_bold fs_l" id="dashboard_task_count">n/a</p>
                         <p class="font_white_color">Assigned to you</p>
                     </div>
                 </article>
                 <article class="card stat-card d_flex_sc_gl f_d_c">
                     <h2 class="card_title">Member of</h2>
                     <div class="card_content d_flex_cc_gm">
-                        <p class="font_white_color fontw_bold fs_l">2</p>
+                        <p class="font_white_color fontw_bold fs_l" id="dashboard_member_count">n/a</p>
                         <p class="font_white_color">Boards</p>
                     </div>
                 </article>
@@ -77,18 +81,12 @@
             <section class="card d_flex_ss_gl f_d_c">
                 <header class="card_header_w_btn"> 
                     <h2 class="card_title">Your boards</h2> 
-                    <button class="std_btn btn_prime d_flex_sc_gs">
+                    <button onclick="redirectToBoards()" class="std_btn btn_prime d_flex_sc_gs">
                         <img src="../../assets/icons/view_board.svg" alt="" srcset="">
                         Boards
                     </button>
                 </header>
-                <ul class="arrow_list d_flex_ss_gm f_d_c">
-                    <li><a class="link" href="/pages/board/?id=1">Projekt Alpha</a></li>
-                    <li><a class="link" href="/pages/board/?id=2">Projekt Beta</a></li>
-                    <li><a class="link" href="/pages/board/?id=3">Projekt Gamma</a></li>
-                    <li><a class="link" href="/pages/board/?id=4">Projekt Delta</a></li>
-                    <li><a class="link" href="/pages/board/?id=5">Projekt Epsilon</a></li>
-                    <li><a class="link" href="/pages/board/?id=6">Projekt Zeta</a></li>
+                <ul class="arrow_list d_flex_ss_gm f_d_c" id="dashboard_boardlist">
                 </ul>
             </section>
         </section>
@@ -97,7 +95,7 @@
            
             <header class="card_header_w_btn"> 
                 <h2 class="card_title">Tasks Insights</h2> 
-                <div class="switch" onclick="toggleSwitch(this)">
+                <div class="switch" onclick="toggleTicketsTypeSwitch(this)">
                     <div class="switch-button"></div>
                 </div></header>
             <table class="responsive-table">
@@ -111,23 +109,7 @@
                         <th>Assignee</th>
                     </tr>
                 </thead>
-                <tbody class="">
-                    <tr>
-                        <td class="title">Project Kickoff</td>
-                        <td class="ws_nw">2024-02-20</td>
-                        <td><div class="priority-badge" priority="high"></div></td>
-                        <td class="ws_nw">In Progress</td>
-                        <td class="d_flex_cc_gs"> <p class="font_sec_color ">2</p> <img src="../../assets/icons/comment_bubble_filled.svg" alt="" srcset=""></td>
-                        <td><div class="profile_circle">KK</div></td>
-                    </tr>
-                    <tr>
-                        <td class="title">Design Review</td>
-                        <td class="ws_nw">2024-02-25</td>
-                        <td ><div class="priority-badge" priority="low"></div></td>
-                        <td class="ws_nw">Pending</td>
-                        <td class="d_flex_cc_gs"> <p class="font_sec_color ">2</p> <img src="../../assets/icons/comment_bubble_filled.svg" alt="" srcset=""></td>
-                        <td><div class="profile_circle">KK</div></td>
-                    </tr>
+                <tbody class="" id="dashboard_tasklist">
                 </tbody>
             </table>
             
@@ -136,8 +118,8 @@
     </main>
     <footer class="main_footer  w_full">
         <nav class="d_flex_cs_gl">
-            <a href="imprint" class="link">Legal Notice</a>
-        <a href="imprint" class="link">Privacy Policy</a>
+            <a href="../privacy/index.html" class="link">Privacy Policy</a>
+            <a href="../imprint/index.html" class="link">Imprint</a>
         </nav>
     </footer>
 </body>

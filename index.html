@@ -4,8 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KanMind</title>
+    <title>Redirecting...</title>
+
+    <link rel="stylesheet" href="../../shared/css/variables.css">
+    <link rel="stylesheet" href="../../shared/css/standard.css">
+    <link rel="stylesheet" href="../../shared/css/fonts.css">
+    <link rel="stylesheet" href="../../shared/css/assets.css">
+
+    <script>
+        function init() {
+            const isAuthenticated = localStorage.getItem("userLoggedIn") === "true";
+
+            if (isAuthenticated) {
+                window.location.href = "./pages/dashboard/index.html";
+            } else {
+                window.location.href = "./pages/auth/login.html";
+            }
+        };
+    </script>
 </head>
-<body>
-    
+<body onload="init()" class="d_flex_cc_gl">
+    <div class="loading-container w_full d_flex_cc_gl f_d_c">
+        <div class="spinner"></div>
+        <p class="font_white_color">Redirecting...</p>
+    </div>
 </body>
 </html>

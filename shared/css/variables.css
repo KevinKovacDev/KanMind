@@ -32,15 +32,15 @@
 
 
   --form-max-w: 800px;
-  --form-s-max-w: 600px;
-  --form-rad: 16px;
+  --form-s-max-w: 500px;
+  --form-rad: 8px;
   --form-pad: 48px;
   --form-gap: 24px;
-  --form-pad-small: 32px;
+  --form-pad-small: 16px;
   --form-bg-color: rgba(28, 39, 57, 1);
   --form-border: 1px solid rgba(33, 48, 73, 1);
   --form-input-rad: 8px;
-  --form-input-padding: 16px 16px;
+  --form-input-pad: 14px 16px;
   --form-input-border: 1px solid rgba(47, 72, 113, 1);
   --form-input-active-border-color: rgba(255, 231, 135, 1);
   --form-input-error-border-color: rgba(255, 0, 4, 1);
@@ -60,7 +60,7 @@
 @media screen and (max-width: 769px) {
   :root {
   --form-pad: 32px;
-  --form-pad-small: 16px;
-  --form-input-padding: 8px 8px;
+  --form-pad-small: 8px;
+  --form-input-pad: 8px 8px;
   }
 }

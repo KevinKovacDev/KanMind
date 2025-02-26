@@ -1,5 +1,7 @@
 /* Buttons */
 
+
+
 .std_btn {
     cursor: pointer;
     border: none;
@@ -62,7 +64,15 @@
     background-color: var(--btn-third-active-color);
 }
 
+.close_btn{
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 8px;
+}
 
+.close_btn:hover {
+    cursor: pointer;
+}
 
 
 
@@ -145,11 +155,10 @@
 
 
 .profile_circle{
+    aspect-ratio: 1 / 1;
     height: 32px;
     width: 32px;
-    background-color: var(--font-prime-color);
     border: 1px solid var(--font_sec_color);
-    color: var(--font_dark_color);
     border-radius: 100%;
     font-size: 12px;
     font-weight: bold;
@@ -158,6 +167,47 @@
     justify-content: center;
 }
 
+.color_A,
+.color_B,
+.color_C,
+.color_D,
+.color_E,
+.color_F
+.color_G{
+    background-color: var(--font-prime-color);
+    color: var(--font_dark_color);
+}
+
+.color_H,
+.color_I,
+.color_J,
+.color_K,
+.color_L,
+.color_M,
+.color_N{
+    background-color: rgba(136, 0, 255, 1);
+    color: var(--font_dark_color);
+}
+
+.color_O,
+.color_P,
+.color_Q,
+.color_R,
+.color_S,
+.color_T,
+.color_U{
+    background-color: rgba(0, 111, 255, 1);
+    color: white;
+}
+
+.color_V,
+.color_W,
+.color_X,
+.color_Y,
+.color_Z {
+    background-color: rgba(22, 193, 255, 1);
+    color: var(--font_dark_color);
+}  
 
 .link{
     color: var(--link-color);
@@ -167,6 +217,21 @@
     color: var(--link-hover-color);
 }
 
+.link_prime{
+    color: var(--link-hover-color);
+}
+
+.link_prime:hover{
+    text-decoration: underline;
+}
+
+.link_secondary{
+    color: var(--font_sec_color);
+}
+
+.link_secondary:hover{
+    text-decoration: underline;
+}
 
 
 .priority-badge {
@@ -182,9 +247,10 @@
 .priority-badge::before {
     content: "";
     position: absolute;
-    width: 14px;  
-    height: 14px;
-    background-size: cover;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 50%;
     background-position: center;
 }
 
@@ -304,7 +370,20 @@
 }
 
 
+.member_list{
+    list-style: none;
+    padding-left: 8px; 
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
 
+.member_list > li{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
 .arrow_list {
     list-style: none;
@@ -327,3 +406,82 @@
     background: url('../../assets/icons/arrow_forward.svg') no-repeat center;
     background-size: contain;
 }
+
+
+
+
+.dialog_wrapper {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    z-index: 1000; 
+    transition: background-color 0.25s ease; 
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dialog_wrapper[open="true"] {
+    display: flex;
+    animation: fadeIn 0.25s ease forwards;
+    background-color: rgba(0, 0, 0, 0.3); 
+}
+
+.dialog_wrapper[open="false"] {
+    display: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.dialog{
+    display: none;
+    box-shadow: 0px 0px 16px 0px #0000003d;
+    margin: auto;
+}
+
+
+.dialog_wrapper[open="true"] .dialog[current_dialog="true"] {
+    animation: slideIn 0.25s ease forwards; 
+    display: flex;
+}
+
+.dialog_wrapper[open="false"] .dialog[current_dialog="true"] {
+    display: none; 
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(200px); 
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+
+
+.spinner {
+    width: 150px;
+    height: 150px;
+    border: 5px solid var(--btn-prime-font-color);
+    border-top-color: var(--btn-prime-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+

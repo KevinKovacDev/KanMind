@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KanMind - Dashboard</title>
+
+    <link rel="stylesheet" href="../../shared/css/variables.css">
+    <link rel="stylesheet" href="../../shared/css/standard.css">
+    <link rel="stylesheet" href="../../shared/css/fonts.css">
+    <link rel="stylesheet" href="../../shared/css/assets.css">
+    <link rel="stylesheet" href="../../shared/css/form.css">
+    <link rel="stylesheet" href="../../shared/css/header_footer.css">
+    <link rel="stylesheet" href="./boards.css">
+
+    <script src="../../shared/js/config.js"></script>
+    <script src="../../shared/js/ui_helper.js"></script>
+    <script src="../../shared/js/api.js"></script>
+    <script src="../../shared/js/header.js"></script>
+    <script src="./boards.js"></script>
+    
+</head>
+
+<body onload="setHeader(); getAndRenderBoardList()">
+    <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset="">
+        <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div>
+    </header>
+    <main class="w_full d_flex_sc_gl">
+        <section class="w_full d_flex_cs_gl f_d_c">
+            <nav class="font_sec_color">
+                <a class="link_secondary" href="../dashboard/">Dashboard</a>
+                /
+                <a class="link_secondary" href="./index.html">Boards</a>
+            </nav>
+            <header class="d_flex_sc_gl w_full d_sb">
+                <h1 class="font_white_color">Your Boards</h1>
+                <form action="" class="searchbar">
+                    <div class="form_group_w_icon_wo_label w_full">
+                        <img src="../../assets/icons/search_yellow.svg" alt="Icon">
+                        <input placeholder="Search" type="text" id="board_search" required>
+                        <label for="board_search" class="d_none">Full name</label>
+                    </div>
+                </form>
+
+                <button onclick="openBoardCreateDialog()" class="std_btn btn_prime d_flex_sc_gs add_btn">
+                    <img src="../../assets/icons/add_black.svg" alt="">
+                    <p>Create board</p>
+                </button>
+            </header>
+            <ul id="board_list" class="arrow_list board_list d_flex_sc_gl f_d_c w_full">
+            </ul>
+        </section>
+        <section onclick="toggleOpenId('dialog_wrapper')" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
+            <form onsubmit="boardCreateSubmit(event)" class="current_dialog card d_flex_ss_gl f_d_c std_form w_full" action="" onclick="stopProp(event); resetMailError()" novalidate>
+                <header class="card_header_w_btn">
+                    <h2 class="font_prime_color">Add Board</h2> 
+                    <button onclick="toggleOpenId('dialog_wrapper')" class="close_btn"><img src="../../assets/icons/close_white.svg" alt=""></button>
+                </header>
+                <div error="false" id="board_title_input_group" class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full">
+                    <label class="label_required" for="board_title_input">Name</label>
+                    <input onblur="validateBoardTitle(this)" value="" class="w_full" placeholder="Name your board" type="text" id="board_title_input" required>
+                    <p class="error_label">Name must be at least 3 characters long.</p>
+                </div>
+
+                <section class="d_flex_ss_gl f_d_c w_full">
+                    <section class="d_flex_cs_gm f_d_c">
+                        <h3 class="font_prime_color">Invite members</h3>
+                        <p class="font_white_color">Add the email addresses of the members you wish to invite to your board</p>
+                        <div onclick="stopProp(event)" error="false" id="create_board_email_input_group" class="form_group_w_icon_wo_label w_full form_group_invite">
+                            <input id="create_board_email_input" type="text" required>
+                            <label for="create_board_email_input">E-Mail</label>
+                            <button type="button" onclick="boardCreateInviteMember()" class="std_btn btn_prime d_flex_cc_gl" >Invite</button>
+                            <p class="error_label" id="email_error_label">Please enter a valid email address.</p>
+                        </div>
+                    </section>
+                    <div class="divider_yellow"></div>
+                    <div class="w_full font_white_color d_flex_ss_gs f_d_c">
+                        <h3>Invited members</h3>
+                        <ul id="create_board_member_list" class="member_list">
+                        </ul>
+                    </div>
+                    <div class="d_flex_cc_gl w_full">
+                        <button type="button" onclick="cancelCreateBoard()" class="std_btn btn_third pad_s">
+                            Cancel
+                        </button>
+                        <button type="submit" class="std_btn btn_prime pad_s d_flex_cc_gs">
+                            Create
+                        </button>
+                        
+                    </div>
+                </section>
+            </form>
+        </section>
+    </main>
+    <footer class="main_footer  w_full">
+        <nav class="d_flex_cs_gl">
+            <a href="../privacy/index.html" class="link">Privacy Policy</a>
+            <a href="../imprint/index.html" class="link">Imprint</a>
+        </nav>
+    </footer>
+</body>
+</html>
