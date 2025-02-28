@@ -55,10 +55,8 @@ function validateFullname(element) {
     }
 }
 
-function validateEmail(element) {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    let valid = emailRegex.test(element.value.trim())
-    setError(!valid, element.id + "_group")
+function validateRegistrationEmail(element) {
+    let valid = validateEmail(element)
     if (valid) {
         signUpValues.email = element.value.trim()
     }
@@ -98,6 +96,7 @@ function validateEmail(element) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let valid = emailRegex.test(element.value.trim())
     setError(!valid, element.id + "_group")
+    return valid;
 }
 
 function validateSignUp() {
