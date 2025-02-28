@@ -167,11 +167,14 @@ async function deleteData(endpoint) {
             method: 'DELETE',
             headers: createHeaders(),
         });
-
+        let responseData = null;
+        if (response.status !== 204) {
+            responseData = await response.json();
+        }
         return {
             ok: response.ok,
             status: response.status,
-            data: {}
+            data: responseData
         };
 
     } catch (error) {

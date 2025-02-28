@@ -212,13 +212,24 @@ td.ws_nw{
     width: 120px;
 }
 
+#dashboard_boardlist{
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
 
+.task_count[zero = false] img:nth-child(3){
+    display: none;
+}
 
+.task_count[zero = true] img:nth-child(2){
+    display: none;
+}
 
+.task_count[zero = true] p{
+    color: var(--card-border-color);
+}
 
-
-
-
-
-
-
+.task_count[zero = true]{
+    gap: 6px;
+}

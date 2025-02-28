@@ -74,3 +74,78 @@ function closeAllDropdowns(event) {
         }
     });
 }
+
+
+
+function extractErrorMessages(errorObject) {
+    let errorMessages = [];
+
+    for (let key in errorObject) {
+        if (errorObject.hasOwnProperty(key)) {
+            const value = errorObject[key];
+            if (typeof value === 'object' && value !== null) {
+                errorMessages = errorMessages.concat(extractErrorMessages(value));
+            } else if (Array.isArray(value)) {
+                errorMessages = errorMessages.concat(value);
+            } else {
+                errorMessages.push(value);
+            }
+        }
+    }
+
+    return errorMessages;
+}
+
+function showToastMessage(error = true, msg = []) {
+    const toast = document.createElement('div');
+    toast.className = 'toast_msg d_flex_cc_gm pad_s';
+    toast.innerHTML = getToastHTML(msg, error);
+    toast.setAttribute('error', error);
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 2500);
+}
+let globalToast = null;
+
+function showToastLastingMessage(error = true, html = "") {
+    if (!globalToast) {
+        globalToast = document.createElement('div');
+        globalToast.className = 'toast_msg d_flex_cc_gm pad_s';
+        document.body.appendChild(globalToast);
+    }
+    globalToast.innerHTML = `<div class="toast_msg_left d_flex_cc_gm">
+            </div>
+            <div class="toast_msg_right">
+                    ${html}
+            </div>`;
+    globalToast.setAttribute('error', error);
+}
+
+function deleteLastingToast() {
+    if (globalToast) {
+        globalToast.remove();
+        globalToast = null;
+    }
+}
+
+function getToastHTML(msg, error) {
+    let msglist = "";
+    if (msg.length <= 0) {
+        msglist = error ? "<li>An error has occurred</li>" : "<li>That worked!</li>"
+    }
+    for (let i = 0; i < msg.length; i++) {
+        msglist += `<li>${msg[i]}</li>`
+    }
+
+    return `<div class="toast_msg_left d_flex_cc_gm">
+            </div>
+            <div class="toast_msg_right">
+                <h3 error="false">Success</h3>
+                <h3 error="true">Error</h3>
+                <ul class="w_full">
+                    ${msglist}
+                </ul>
+            </div>`
+}

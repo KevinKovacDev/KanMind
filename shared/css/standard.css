@@ -41,6 +41,7 @@ main {
     align-items: center;
     padding: 48px 64px;
     max-width: var(--section-max-w);
+    z-index: 1;
 }
 
 

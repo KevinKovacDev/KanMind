@@ -4,8 +4,6 @@
     padding: var(--btn-pad);
 }
 
-
-
 .searchbar {
     flex-grow: 1;
 }
@@ -44,15 +42,53 @@ header {
     }
 }
 
+[current-dialog="board_create"] [dialog-type="board_settings"] {
+    display: none !important;
+}
+
+[current-dialog="board_settings"] [dialog-type="board_create"] {
+    display: none !important;
+}
+
 .board_list > li{
     color: var(--font_white_color);
     padding-left: 48px;
+    padding-right: 48px;
     flex-wrap: wrap;
 }
 
 .board_list > li:hover{
     cursor: pointer;
     background-color: var(--bg-color);
+}
+
+.board_settings_btn{
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    padding: 8px;
+    background-color: transparent;
+    border: none;
+    color: var(--font_white_color);
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    max-width: 48px;
+}
+
+.board_list > li:hover .board_settings_btn{
+    display: flex;
+}
+
+@media (hover: none)  {
+    .board_list > li .board_settings_btn {
+        display: flex;
+    }
+}
+.board_list > li:hover .board_settings_btn{
+    display: flex;
 }
 
 .arrow_list {

@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="../../shared/css/header_footer.css">
     <link rel="stylesheet" href="./board.css">
 
+    <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+
     <script src="../../shared/js/config.js"></script>
     <script src="../../shared/js/ui_helper.js"></script>
     <script src="../../shared/js/api.js"></script>
@@ -22,8 +24,8 @@
 
 </head>
 
-<body onload="setHeader(); init()" onclick="closeAllDropdowns(event)" onkeydown="setShift(event)"
-    onkeyup="unsetShift(event)">
+<body onload="setHeader(); init()" onclick="closeAllDropdowns(event); resetAllMoveOpen()" onkeydown="setShift(event)"
+    onkeyup=" unsetShift(event)">
     <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset="">
         <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div>
     </header>
@@ -31,26 +33,28 @@
 
 
         <section class="w_full d_flex_sc_gl f_d_c f_one h_full">
-            <nav class="font_sec_color w_full">
-                <a class="link_secondary" href="../dashboard/index.html">Dashboard</a>
-                /
-                <a class="link_secondary" href="../boards/index.html">Boards</a>
-                /
-                <a class="link_secondary" href="./index.html" id="board_title_link">Title not found</a>
-            </nav>
-
+            <div class="w_full d_flex_sc_gs d_sb">
+                <nav class="font_sec_color ">
+                    <a class="link_secondary" href="../dashboard/index.html">Dashboard</a>
+                    /
+                    <a class="link_secondary" href="../boards/index.html">Boards</a>
+                    /
+                    <a class="link_secondary" href="./index.html" id="board_title_link">Title not found</a>
+                </nav>
+                <button class="std_btn btn_prime d_flex_sc_gs" onclick="openCreateTaskDialog('to-do')">
+                    <img src="../../assets/icons/add_black.svg" alt="" srcset="">
+                    <p>Add Task</p>
+                    </button>
+            </div>
             <header class="d_flex_sc_gl w_full d_sb board_header">
-                <h1 class="font_white_color">Your Boards</h1>
+                <h1 class="font_white_color"  id="board_title">not title found</h1>
 
                 <div class="d_flex_sc_gs">
                     <ul class="short_profile_list" id="short_profile_list">
                     </ul>
-                    <button onclick="openEditBoardDialog()" class="std_btn view_profile_list_btn"> <img
-                            src="../../assets/icons/member_icon.svg" alt="">
-                    </button>
                 </div>
 
-                <form action="" class="searchbar">
+                <form class="searchbar">
                     <div class="form_group_w_icon_wo_label w_full">
                         <img src="../../assets/icons/search_yellow.svg" alt="Icon">
                         <input onkeyup="renderAllTasks()" placeholder="Search" type="text" id="searchbar_tasks"
@@ -59,9 +63,8 @@
                     </div>
                 </form>
 
-                <button onclick="" class="std_btn btn_prime d_flex_sc_gs add_btn">
-                    <img src="../../assets/icons/view_board.svg" alt="">
-                    <p>Boards</p>
+                <button onclick="openEditBoardDialog()" class="std_btn d_flex_sc_gs board_settings_btn">
+                    <img src="../../assets/icons/settings.svg" alt="">
                 </button>
             </header>
 
@@ -115,48 +118,82 @@
         </section>
 
 
-        <section onclick="toggleOpenId('dialog_wrapper')" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
-            <article id="edit_board_dialog" current_dialog="true" class="dialog card d_flex_ss_gl f_d_c std_form w_full"
-                onclick="stopProp(event)">
-
+        <section onmousedown="toggleOpenId('dialog_wrapper')" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
+            <section id="edit_board_dialog" current_dialog="false" dialog-type="board_settings" class="current_dialog dialog card d_flex_ss_gl f_d_c std_form w_full" onmousedown="stopProp(event)" onclick="stopProp(event)">
                 <header class="card_header_w_btn">
-                    <h2 class="font_prime_color">Board Members</h2>
-                    <button onclick="toggleOpenId('dialog_wrapper')" class="close_btn d_flex_cc_gs">
-                        <img src="../../assets/icons/close_white.svg" alt="">
-                    </button>
+                    <h2 class="font_prime_color">Board Settings</h2>
+                    <button onclick="toggleOpenId('dialog_wrapper')" class="close_btn"><img
+                            src="../../assets/icons/close_white.svg" alt=""></button>
                 </header>
+                <article edit="false" class="w_full" id="board_settings_title_group">
+                    <form class="">
+                        <div error="false" id="board_settings_title_input_group"
+                            class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full ">
+                            <label class="label_required" for="board_settings_title_input">Name</label>
 
-                <div class="w_full font_white_color d_flex_ss_gs f_d_c">
-                    <ul id="edit_board_member_list" class="member_list">
+                            <div class="checkbox_input_group w_full">
+                                <input onblur="validateBoardTitle(this)" value="" class="w_full"
+                                    placeholder="Name your board" type="text" id="board_settings_title_input" required>
+                                <div class="checkbox_wrapper">
+                                    <button type="button" onclick="setNewBoardTitle()"
+                                        class="std_btn d_flex_cc_gs confirm_btn">
+                                        <img src="../../assets/icons/check_yellow.svg" alt="" srcset="">
+                                    </button>
+                                    <button type="button" onclick="toggleBoardTitleEdit()"
+                                        class="std_btn d_flex_cc_gs confirm_btn">
+                                        <img src="../../assets/icons/close_yellow.svg" alt="" srcset="">
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="error_label">Name must be at least 3 characters long.</p>
+                        </div>
+                    </form>
+                    <header class="non_edit_content card_header_w_btn">
+                        <h3 id="board_settings_title" class="font_white_color">
+                            Title
+                        </h3>
+                        <button type="button" onclick="toggleBoardTitleEdit()" class="close_btn d_flex_cc_gs">
+                            <img src="../../assets/icons/edit.svg" alt="" srcset="">
+                        </button>
+                    </header>
+                </article>
+                <article class="d_flex_cs_gm f_d_c w_full">
+                    <h3 class="font_prime_color">Invite members</h3>
+                    <p class="font_white_color">Add the email addresses of the members you wish to invite to your
+                        board</p>
+                    <div onclick="stopProp(event)" error="false" id="board_settings_email_input_group"
+                        class="form_group_w_icon_wo_label w_full form_group_invite">
+                        <input id="board_settings_email_input" type="text" required>
+                        <label for="board_settings_email_input">E-Mail</label>
+                        <button type="button" onclick="boardSettingsInviteMember()"
+                            class="std_btn btn_prime d_flex_cc_gl">Invite</button>
+                        <p class="error_label" id="email_error_label">Please enter a valid email address.</p>
+                    </div>
+                </article>
 
+                <div class="divider_yellow "></div>
+
+                <article class="w_full font_white_color d_flex_ss_gl f_d_c">
+                    <h3>Invited members</h3>
+                    <ul id="board_settings_member_list" class="member_list">
                     </ul>
-                </div>
-
+                </article>
                 <div class="divider_yellow"></div>
 
-                <section class="d_flex_cs_gs f_d_c">
-                    <h3 class="font_prime_color">Invite members</h3>
-                    <p class="font_white_color">Add the email addresses of the members you wish to invite to your board
-                    </p>
-                    <div class="form_group_w_icon_wo_label w_full form_group_invite">
-                        <input id="create_board_email_input" type="email" id="email" required>
-                        <label for="email">E-Mail</label>
-                        <button class="std_btn btn_prime d_flex_cc_gl">Invite</button>
+                <article class="font_white_color d_flex_cc_gl ">
+                    <div class="font_white_color d_flex_ss_gm f_d_c">
+                        <h3>Delete Board</h3>
+                        <p>This action is irreversible. Once you delete this board, it cannot be restored.</p>
                     </div>
-                </section>
-
-                <div class="d_flex_cc_gl w_full">
-                    <button class="std_btn btn_third pad_s">
-                        Cancel
+                    <button onclick="openBoardDeleteToast()" class="std_btn btn_prime d_flex_sc_gs add_btn">
+                        <img src="../../assets/icons/delete_dark.svg" alt="">
+                        <p>Delete Board</p>
                     </button>
-                    <button class="std_btn btn_prime pad_s d_flex_cc_gs">
-                        Save
-                    </button>
-                </div>
-            </article>
+                </article>
+            </section>
 
-            <article dialog-type="edit" id="create_edit_task_dialog" onclick="stopProp(event); closeAllDropdowns(event)"
-                current_dialog="false" class="dialog current_dialog card d_flex_ss_gl f_d_c std_form w_full">
+            <article id="create_edit_task_dialog" current_dialog="false" dialog-type="edit" onmousedown="stopProp(event)" onclick="stopProp(event); closeAllDropdowns(event)" class="dialog current_dialog card d_flex_ss_gl f_d_c std_form w_full">
                 <header class="card_header_w_btn">
                     <h2 dialog-type="sub_create" class="font_prime_color">Add Task</h2>
                     <h2 dialog-type="sub_edit" class="font_prime_color">Edit Task</h2>
@@ -169,6 +206,12 @@
                         </button>
                     </div>
                 </header>
+                <select onchange="modifyAddEditTaskStatusDropdown()" id="create_edit_task_dialog_select">
+                    <option value="to-do">To-do</option>
+                    <option value="in-progress">In progress</option>
+                    <option value="review">Review</option>
+                    <option value="done">Done</option>
+                </select>
 
                 <div error="false" id="create_edit_task_title_input_group"
                     class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full">
@@ -215,9 +258,9 @@
                         <label class="font_white_color label_required"
                             for="create_edit_task_date_input">Due-date</label>
                         <div class="custom_datepicker w_full">
+                            <img  src="../../assets/icons/calendar_month.svg" alt="Calendar Icon">
                             <input onchange="setTaskCreateDate(this)" class="font_white_color" type="date"
                                 id="create_edit_task_date_input">
-                            <img src="../../assets/icons/calendar_month.svg" alt="Calendar Icon">
                         </div>
                         <p class="error_label">Due-date must be set.</p>
                     </div>
@@ -265,8 +308,7 @@
                 </div>
             </article>
 
-            <article id="task_detail_dialog" current_dialog="false"
-                class="dialog card d_flex_ss_gl f_d_c std_form w_full" action="" onclick="stopProp(event)">
+            <article id="task_detail_dialog" current_dialog="false" class="dialog card d_flex_ss_gl f_d_c std_form w_full" onmousedown="stopProp(event)" onclick="stopProp(event)">
                 <header class="card_header_w_btn">
                     <h2 id="detail_task_title" class="font_prime_color">Title not found</h2>
                     <div class="d_flex_cc_gs">
@@ -278,7 +320,12 @@
                         </button>
                     </div>
                 </header>
-
+                <select onchange="modifyTaskStatusDropdown()" id="task_detail_dialog_select">
+                    <option value="to-do">To-do</option>
+                    <option value="in-progress">In progress</option>
+                    <option value="review">Review</option>
+                    <option value="done">Done</option>
+                </select>
                 <section class="font_white_color d_flex_ss_gl f_d_c w_full">
                     <div class="info_elem">
                         <strong>Description</strong>
@@ -322,13 +369,8 @@
                     </article>
 
                     <section id="task_comment_list" class="d_flex_ss_gm f_d_c w_full">
-
                     </section>
-
-
-
                 </section>
-
             </article>
         </section>
     </main>

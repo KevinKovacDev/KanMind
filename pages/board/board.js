@@ -28,14 +28,16 @@ function cleanCurrentTask() {
 }
 
 async function init() {
-    currentBoard = await getBoard()
-    cleanCurrentTask()
-    renderAllTasks()
-    renderMemberList()
+    currentBoard = await getBoard();
+    cleanCurrentTask();
+    renderAllTasks();
+    renderMemberList();
+    renderTitle();
+}
+
+function renderTitle(){
     document.getElementById('board_title_link').innerText = currentBoard.title;
-    document.querySelector('form').addEventListener('submit', function(event) {
-        console.log("Another submit listener detected"); // Überprüfe, ob dies in der Konsole erscheint
-    });
+    document.getElementById('board_title').innerText = currentBoard.title;
 }
 
 async function getBoard() {
@@ -66,26 +68,6 @@ function renderMemberList() {
     }
 }
 
-async function openEditBoardDialog() {
-    changeCurrentDialog("edit_board_dialog");
-    toggleOpenId('dialog_wrapper');
-    currentMemberList = currentBoard.members
-    renderEditBoardDialog();
-}
-
-function renderEditBoardDialog(){
-    let ListTemplate = ""
-    currentMemberList.forEach(member => {
-        ListTemplate += `<li>${member.email}<button class="std_btn btn_prime">Remove</button></li>`
-    });
-    document.getElementById('edit_board_member_list').innerHTML = ListTemplate
-}
-
-function deleteEditBoardMember(emailToRemove){
-    currentMemberList = currentMemberList.filter(user => user.email !== emailToRemove);
-    renderEditBoardDialog()
-}
-
 async function openTaskDetailDialog(id) {
     currentTask = getTaskById(id);
     changeCurrentDialog("task_detail_dialog");
@@ -99,6 +81,7 @@ async function loadAndRenderDetailTask(id) {
 }
 
 function renderDetailTask() {
+    document.getElementById('task_detail_dialog_select').value = currentTask.status;
     document.getElementById('detail_task_title').innerHTML = currentTask.title
     document.getElementById('detail_task_description').innerHTML = currentTask.description
     document.getElementById('detail_task_assignee').innerHTML = getDetailTaskPersonTemplate(currentTask.assignee)
@@ -147,7 +130,8 @@ async function sendComment(event, element) {
         if (newComment.content.length > 0) {
             let response = await postData(TASKS_URL + currentTask.id + "/comments/", newComment);
             if (!response.ok) {
-                console.log(2)
+                let errorArr = extractErrorMessages(response.data)
+                showToastMessage(true, errorArr)
             } else {
                 element.value = '';
                 currentComments = await getTaskComments(currentTask.id);
@@ -224,8 +208,21 @@ function openEditTaskDialog() {
     fillEditCreateTaskDialog('edit')
 }
 
-function deleteCurrentTask(){
-    console.log(currentTask.id)
+function deleteCurrentTask() {
+    deleteTask(currentTask.id)
+}
+
+function deleteTask(id) {
+    deleteData(TASKS_URL + id + "/").then(async response => {
+        if (!response.ok) {
+            let errorArr = extractErrorMessages(response.data)
+            showToastMessage(true, errorArr)
+        } else {
+            cleanCurrentTask()
+            toggleOpenId('dialog_wrapper')
+            await loadAndRenderTasks()
+        }
+    })
 }
 
 function fillEditCreateTaskDialog(type) {
@@ -233,6 +230,7 @@ function fillEditCreateTaskDialog(type) {
     fillCreateEditTaskTitleInputDesc()
     renderTaskCreateMemberList()
     setTaskCreateDropdownPrioHeader()
+    setSelectAddEditTaskStatusDropdown()
 }
 
 function renderTaskCreateMemberList() {
@@ -342,8 +340,8 @@ async function submitCreateTask(event) {
 async function createTask(newTask) {
     let response = await postData(TASKS_URL, newTask);
     if (!response.ok) {
-        // let errorArr = extractErrorMessages(response.data)
-        // showToastMessage(true, errorArr)
+        let errorArr = extractErrorMessages(response.data)
+        showToastMessage(true, errorArr)
     } else {
         cleanCurrentTask()
         toggleOpenId('dialog_wrapper')
@@ -370,11 +368,45 @@ async function submitEditTask() {
     }
 }
 
+function setSelectAddEditTaskStatusDropdown() {
+    document.getElementById('create_edit_task_dialog_select').value = currentTask.status;
+    
+}
+
+function modifyAddEditTaskStatusDropdown(){
+    let status = document.getElementById('create_edit_task_dialog_select').value
+    currentTask.status = status;
+}
+
+async function modifyTaskStatusDropdown(){
+    let status = document.getElementById('task_detail_dialog_select').value
+    await modifyTaskStatus(currentTask.id, status)
+}
+
+async function modifyTaskStatus(id, status) {
+    let response = await patchData(TASKS_URL + id + "/", {"status": status});
+    if (!response.ok) {
+        let errorArr = extractErrorMessages(response.data)
+        showToastMessage(true, errorArr)
+    } else {
+        await loadAndRenderTasks()
+    }
+}
+function toggleMoveOpen(element) {
+    resetAllMoveOpen()
+    let isOpen = element.getAttribute('move-open') === 'true';
+    element.setAttribute('move-open', !isOpen);
+}
+
+function resetAllMoveOpen() {
+    document.querySelectorAll('.move_btn').forEach(btn => btn.setAttribute('move-open', 'false'));
+}
+
 async function editTask(updatedTask) {
     let response = await patchData(TASKS_URL + updatedTask.id + "/", updatedTask);
     if (!response.ok) {
         // let errorArr = extractErrorMessages(response.data)
-        // showToastMessage(true, errorArr)
+        showToastMessage(true, errorArr)
     } else {
         cleanCurrentTask()
         toggleOpenId('dialog_wrapper')
@@ -434,8 +466,30 @@ function getBoardCardTemplate(task) {
                                 </div>
                             </header>
                             <p class="column_card_content font_white_color">${task.description}</p>
+                            ${getBoardCardMoveBtnTemplate(task)}
                         </li>`
 }
+
+function getBoardCardMoveBtnTemplate(task) {
+    let statii = ['to-do', 'in-progress', 'review', 'done'];
+    let currentStatusIndex = statii.indexOf(task.status);
+    let moveBtns = "";
+    if (currentStatusIndex > 0) {
+        moveBtns += `<button onclick="modifyTaskStatus(${task.id}, '${statii[currentStatusIndex-1]}')">${statii[currentStatusIndex-1]}<img class="rotate_half" src="../../assets/icons/arrow_forward.svg" alt="" srcset=""></button>`
+    }
+    if (currentStatusIndex < statii.length - 1) {
+        moveBtns += `<button onclick="modifyTaskStatus(${task.id}, '${statii[currentStatusIndex+1]}')">${statii[currentStatusIndex+1]} <img src="../../assets/icons/arrow_forward.svg" alt="" srcset=""></button>`
+    }
+
+    return `<div move-open="false" class="move_btn" onclick="toggleMoveOpen(this); stopProp(event)">
+        <img src="../../assets/icons/swap_horiz.svg" alt="">
+        <div class=" d_flex_sc_gs f_d_c pad_s">
+            <p class="font_prime_color ">Move to</p>
+            ${moveBtns}
+        </div>
+    </div>`
+}
+
 
 function searchInTasks(searchTerm) {
     const lowerCaseSearch = searchTerm.toLowerCase();
@@ -447,3 +501,198 @@ function searchInTasks(searchTerm) {
     });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+let currentSettingsBoard
+
+async function openEditBoardDialog() {
+    openBoardSettingsDialog(currentBoard.id)
+}
+
+
+function validateBoardTitle(element){
+    let valid = element.value.trim().length > 2;
+    setError(!valid, element.id + "_group")
+    return valid
+}
+
+function validateMemberEmail(element) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    let valid = emailRegex.test(element.value.trim())
+    let labelRef = document.getElementById("email_error_label")
+    labelRef.innerText = "Please enter a valid email address."
+
+    if(valid){
+        valid = currentSettingsBoard.members.filter( user => user.email == element.value.trim()).length == 0
+        labelRef.innerText = "This email adress already exist as member."
+    }
+    
+    setError(!valid, element.id + "_group")
+    return valid 
+}
+
+async function openBoardSettingsDialog(id) {
+    let board = await getBoardById(id);
+    if (board) {
+        currentSettingsBoard = board;
+        changeCurrentDialog("edit_board_dialog");
+        toggleOpenId('dialog_wrapper');
+        renderBoardSettingsDialog();
+    } else {
+        console.error("Board not found");
+    }
+}
+
+async function getBoardById(id) {
+    let response = await getData(BOARDS_URL + id + "/");
+    if (response.ok) {
+        return response.data;
+    } else {
+        return null;
+    }
+}
+
+function renderBoardSettingsDialog(){
+    document.getElementById("board_settings_title").innerText = currentSettingsBoard.title;
+    renderBoardSettingsMemberList()
+}
+
+function renderBoardSettingsMemberList(){
+    let htmltext = "";
+    currentSettingsBoard.members.forEach(member => {
+        if(member.id == currentSettingsBoard.owner_id){
+            htmltext += `<li>${member.email} <p>(owner)</p></li>`
+        } else {
+            htmltext +=  `<li>${member.email}<button onclick="removeBoardSettingsMember(${member.id})" class="std_btn btn_prime ">Remove</button></li>`
+        }
+    });
+    document.getElementById("board_settings_member_list").innerHTML = htmltext;
+}
+
+async function removeBoardSettingsMember(id){
+    currentSettingsBoard.members = currentSettingsBoard.members.filter(member => member.id !== id);
+    await patchBoardSettingsMembers()
+    renderBoardSettingsMemberList();
+}
+
+function boardSettingsInviteMember(){
+    let element = document.getElementById("board_settings_email_input")
+    let valid = validateMemberEmail(element)
+    if(valid){
+        boardSettingsCheckMailAddress(element)
+    }
+
+}
+
+async function boardSettingsCheckMailAddress(element){
+    let mail = element.value.trim()
+    let resp = await checkMailAddress(mail)
+    console.log(resp)
+    if(resp){
+        currentSettingsBoard.members.push(resp)
+        renderBoardSettingsMemberList()
+        document.getElementById("board_settings_email_input").value = "";
+        await patchBoardSettingsMembers()
+    } else {
+        document.getElementById("email_error_label").innerText = "This email adress doesn't exist."
+        setError(true, element.id + "_group")
+    }
+}
+
+function patchBoardSettingsMembers(){
+    let boardMemberIds = currentSettingsBoard.members.map(member => member.id)
+    updateBoard({"members": boardMemberIds})
+}
+
+function toggleBoardTitleEdit(){
+    let titleElement = document.getElementById("board_settings_title_group");
+    let isEditing = titleElement.getAttribute("edit") === "true";
+    titleElement.setAttribute("edit", !isEditing);
+    if(!isEditing) {
+        let inputElement = document.getElementById("board_settings_title_input");
+        inputElement.value = currentSettingsBoard.title;
+        inputElement.focus();
+    }
+}
+
+async function setNewBoardTitle(){
+    let inputElement = document.getElementById("board_settings_title_input");
+    let title = inputElement.value.trim();
+    if (validateBoardTitle(inputElement)) {
+        
+        let resp = await updateBoard({"title": title});
+        if(resp.ok){
+            currentBoard.title = title;
+            currentSettingsBoard.title = title;
+            renderTitle()
+            let titleElement = document.getElementById("board_settings_title");
+            titleElement.innerText = title;
+            toggleBoardTitleEdit();
+        }
+    }
+}
+
+async function updateBoard(data){
+    let response = await patchData(BOARDS_URL + currentSettingsBoard.id + "/", data);
+    console.log(response.data)
+    if (!response.ok) {
+        let errorArr = extractErrorMessages(response.data)
+        showToastMessage(true, errorArr)
+    } 
+    return response;
+}
+
+function openBoardDeleteToast(){
+    let htmltext = `
+            <article class="font_ d_flex_cc_gl">
+                <div class=" d_flex_ss_gm f_d_c">
+                    <h3>Delete Board</h3>
+                    <p>Are you sure you want to delete the board Event Planning (Clients)?</p>
+                </div>
+                <div class="font_sec_color d_flex_cc_gm f_d_c">
+                    <button onclick="deleteBoard()" class="std_btn btn_prime d_flex_sc_gs">
+                        <img src="../../assets/icons/delete_dark.svg" alt="">
+                        <p>Delete Board</p>
+                    </button>
+                    <button onclick="deleteLastingToast()" class="font_prime_color std_btn toast_cancel d_flex_sc_gs">
+                        <p class="w_full">Cancel</p>
+                    </button>
+                </div>
+            </article>`
+    showToastLastingMessage(true, htmltext)
+}
+
+async function deleteBoard(){
+    let response = await deleteData(BOARDS_URL + currentSettingsBoard.id + "/");
+    if(response.ok){
+        window.location.href = "../../pages/boards/"
+    } else {
+        console.log(response.data)
+        let errorArr = extractErrorMessages(response.data)
+        showToastMessage(true, errorArr)
+    }
+    deleteLastingToast() 
+}
+
+
+
+
+
+
+
+
+
+
+function triggerDateInput(element) {
+    document.getElementById(element).nextElementSibling.showPicker();
+}

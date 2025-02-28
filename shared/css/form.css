@@ -3,7 +3,9 @@
     border: var(--form-border);
     background-color: var(--form-bg-color);
     padding: var(--form-pad);
-    max-width: var(--form-max-w);
+    max-width: var(--form-max-w);    
+    height: fit-content;
+    margin: auto;
 }
 
 .std_form_small {
@@ -15,8 +17,8 @@
 }
 
 .form_group_w_icon_wo_label,
-.form_group_wo_icon_w_label>input,
-.form_group_wo_icon_w_label>textarea {
+.form_group_wo_icon_w_label input,
+.form_group_wo_icon_w_label textarea {
     border-radius: var(--form-input-rad);
     border: var(--form-input-border);
     background-color: var(--form-input-bg-color);
@@ -311,18 +313,6 @@ textarea {
 
 
 
-
-
-
-
-.custom_datepicker {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    cursor: pointer;
-}
-
 .custom_datepicker {
     position: relative;
     display: flex;
@@ -331,14 +321,15 @@ textarea {
     border-radius: var(--form-input-rad);
     border: var(--form-input-border);
     background-color: var(--form-input-bg-color);
-    padding: var(--form-input-pad);
 }
 
 .custom_datepicker input {
     z-index: 2;
     width: 100%;
     border: none;
-    background-color: transparent;
+    background-color: transparent;    
+    justify-content: end;
+    padding-right: 16px;
 }
 
 .custom_datepicker input:active,
@@ -366,4 +357,18 @@ input:-webkit-autofill:focus {
 }
 input[data-autocompleted] {
     background-color: transparent !important;
+}
+
+select{
+    border: none;
+    background-color: var(--card-border-color);
+    color: var(--font_white_color);
+    padding: var(--btn-pad);
+    border-radius: var(--form-input-rad);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+option {
+    
 }

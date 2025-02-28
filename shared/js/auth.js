@@ -16,8 +16,8 @@ async function signUpSubmit(event) {
 async function registration(data) {
     let response = await postData(REGISTER_URL, data);
     if (!response.ok) {
-        // let errorArr = extractErrorMessages(response.data)
-        // showToastMessage(true, errorArr)
+        let errorArr = extractErrorMessages(response.data)
+        showToastMessage(true, errorArr)
     } else {
         setAuthCredentials(response.data.token, response.data.user_id, response.data.email, response.data.fullname)
         window.location.href = "../dashboard/index.html"

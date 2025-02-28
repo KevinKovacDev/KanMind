@@ -174,7 +174,7 @@ function renderDashboard(){
 function renderBoardList(){
     let htmlText = "";
     currentBoards.forEach(board => {
-        htmlText += `<li><a class="link" href="/pages/board/?id=${board.id}">${board.title}</a></li>`
+        htmlText += `<li><a class="link" href="../../pages/board/?id=${board.id}">${board.title}</a></li>`
     });
 
     document.getElementById('dashboard_boardlist').innerHTML = htmlText;
@@ -224,9 +224,11 @@ function getSingleTaskTemplate(task) {
                             <div class="priority-badge" priority="${task.priority}"></div>
                         </td>
                         <td class="ws_nw">${task.status}</td>
-                        <td class="d_flex_cc_gs"> 
-                            <p class="font_sec_color ">2</p> 
-                            <img src="../../assets/icons/comment_bubble_filled.svg" alt="" srcset=""></td>
+                        <td class="d_flex_cc_gs task_count" zero="${task.comments_count==0}"> 
+                            <p class="font_sec_color">${task.comments_count}</p> 
+                            <img src="../../assets/icons/comment_bubble_filled.svg" alt="" srcset="">
+                            <img src="../../assets/icons/comment_bubble_empty.svg" alt="" srcset="">
+                        </td>
                         <td>
                             ${assigneeTemplate}
                         </td>
@@ -243,7 +245,7 @@ function renderUrgentTask(){
     let task = getNearestDueDateTask();
     let count = currentAssignedTickets.filter(task => task.priority == "high").length;
     document.getElementById('high_prio_count').innerText = count
-    document.getElementById('upcoming_deadline').innerText = formatDate(task.due_date)
+    document.getElementById('upcoming_deadline').innerText = task ? formatDate(task.due_date) : "no upcoming deadline";
 }
 
 function getNearestDueDateTask() {

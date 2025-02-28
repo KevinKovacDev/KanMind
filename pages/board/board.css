@@ -217,3 +217,58 @@ main {
 [dialog-type="edit"] [dialog-type="sub_edit"] {
     display: block;
 }
+
+.board_settings_btn{
+    padding: 8px;
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+}
+
+.move_btn{
+    cursor: pointer;
+    position: relative;
+    width: fit-content;
+    padding: 4px;
+}
+
+.move_btn > div{
+    display: none;
+    position: absolute;
+    left: 100%;
+    bottom: 0;
+    background-color: var(--bg-color-dark);
+    border-radius: var(--card-rad);
+    align-items: stretch;
+}
+
+.move_btn > div > button{
+    color: var(--font_white_color);
+    padding: 8px;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-direction: row;
+    border-radius: var(--card-rad);
+    white-space: nowrap;
+    width: 100%;
+    font-size: 14px;
+}
+
+.move_btn > div > button:nth-last-child(){
+    justify-content: flex-end;
+}
+
+.move_btn[move-open="true"] > div{
+    display: flex;
+}
+
+.move_btn > div > button:hover{
+    cursor: pointer;
+    background-color: var(--bg-color);
+}
+
