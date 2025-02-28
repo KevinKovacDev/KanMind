@@ -21,14 +21,15 @@
     <script src="../../shared/js/ui_helper.js"></script>
     <script src="../../shared/js/api.js"></script>
     <script src="../../shared/js/header.js"></script>
+    <script src="./dashboard_charts.js"></script>
     <script src="./dashboard.js"></script>
 
 </head>
 <body onload="init(); setHeader()">
-    <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset=""> <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div></header>
+    <header class="main_header w_full"><img onclick="redirectToDashboard()" src="../../assets/icons/logo_icon.svg" alt="" srcset=""> <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div></header>
     <main class="w_full">
         
-        <h1 class="dashboard_title font_prime_color"><img src="../../assets/icons/shake_hands.png" alt=""><span class="font_white_color"> Welcome </span>Kevin</h1>
+        <h1 class="dashboard_title font_prime_color" id="welcome_message"></h1>
         <section class="dashboard_stats_section">
             <section class="stats w_full">
                 <article class="card stat-card ">

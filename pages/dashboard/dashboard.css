@@ -233,3 +233,9 @@ td.ws_nw{
 .task_count[zero = true]{
     gap: 6px;
 }
+
+#dashboard_tasklist tr:hover {
+    cursor: pointer;
+    background-color: var(--card-border-color);
+    border-radius: var(--card-rad);
+}

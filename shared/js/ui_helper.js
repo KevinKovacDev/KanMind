@@ -75,8 +75,6 @@ function closeAllDropdowns(event) {
     });
 }
 
-
-
 function extractErrorMessages(errorObject) {
     let errorMessages = [];
 
@@ -148,4 +146,41 @@ function getToastHTML(msg, error) {
                     ${msglist}
                 </ul>
             </div>`
+}
+
+function timeDifference(timestamp) {
+    const time = new Date(timestamp);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - time) / 1000);
+
+    const units = [
+        { single_name: "year", plural_name: "years", seconds: 31536000 },
+        { single_name: "month", plural_name: "months", seconds: 2592000 },
+        { single_name: "day", plural_name: "days", seconds: 86400 },
+        { single_name: "hour", plural_name: "hours", seconds: 3600 },
+        { single_name: "minute", plural_name: "minutes", seconds: 60 },
+        { single_name: "second", plural_name: "seconds", seconds: 1 }
+    ];
+
+    for (let unit of units) {
+        const count = Math.floor(diffInSeconds / unit.seconds);
+        if (count >= 1) {
+            return `${count} ${count > 1 ? unit.plural_name : unit.single_name} ago`;
+        }
+    }
+    return "gerade eben";
+}
+
+
+function getParamFromUrl(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+function redirectToDashboard() {
+    if(getAuthUserId()){
+        window.location.href = "../../pages/dashboard/";
+    } else {
+        window.location.href = "../../pages/auth/login.html";
+    }
 }

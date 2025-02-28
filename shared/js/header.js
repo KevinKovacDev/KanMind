@@ -46,10 +46,23 @@ function closeOtherMenuBtns(element) {
 }
 
 function getLogedInHeaderTemplate() {
-    let currentUser = getAuthUser();
-    if(!currentUser.id){
-        window.location.href = "../auth/login.html"
+    const currentUrl = window.location.href;
+    let currentUserId = getAuthUserId();
+    if(!currentUserId){
+        if (currentUrl.endsWith('/imprint/index.html') || currentUrl.endsWith('/privacy/index.html')) {
+            return `
+            <div class="d_flex_cc_gm">
+                <a href="../../pages/auth/login.html" class="std_btn btn_prime pad_s d_flex_cc_gs">
+                    <img src="../../assets/icons/login_icon.svg" alt="" srcset=""> 
+                    Log in
+                </a>
+            </div>`
+        } else {
+            window.location.href = "../auth/login.html"
+        }
+        
     }
+    let currentUser = getAuthUser();
     return `
         <div class="menu_btn_wrapper">
             <button onclick="closeOtherMenuBtns(this); toggleOpen(this); stopProp(event)" closable="true" open="false" class="menu_toggle std_btn menu_btn pad_s d_flex_cc_gs">

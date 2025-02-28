@@ -206,6 +206,38 @@ main {
     height: 120px;
 }
 
+.comment_wrapper_textarea{
+    position: relative;
+}
+
+.comment_wrapper_textarea > img{
+    display: none;
+    position: absolute;
+    cursor: pointer;
+    bottom: 0;
+    right: 0;
+    margin: var(--form-input-pad);
+    width: 24px;
+}
+
+.comment_wrapper .delete_btn{
+    display: none;
+}
+
+.comment_wrapper:hover .delete_btn{
+    display: block;
+}
+
+@media (hover: none)  {
+    .comment_wrapper_textarea > img{
+        display: flex;
+    }
+
+    .comment_wrapper .delete_btn{
+        display: block;
+    }
+}
+
 [dialog-type="sub_create"], [dialog-type="sub_edit"] {
     display: none;
 }
@@ -226,6 +258,13 @@ main {
     justify-content: center;
     aspect-ratio: 1/1;
 }
+
+.delete_btn{
+    cursor: pointer;
+    background-color: transparent;
+}
+
+
 
 .move_btn{
     cursor: pointer;
@@ -272,3 +311,6 @@ main {
     background-color: var(--bg-color);
 }
 
+#board_settings_title_input{
+    padding-right: 90px;
+}

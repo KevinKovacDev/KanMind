@@ -20,13 +20,15 @@
     <script src="../../shared/js/ui_helper.js"></script>
     <script src="../../shared/js/api.js"></script>
     <script src="../../shared/js/header.js"></script>
+    <script src="./board_templates.js"></script>
     <script src="./board.js"></script>
+    <script src="../../shared/js/board_settings.js"></script>
 
 </head>
 
 <body onload="setHeader(); init()" onclick="closeAllDropdowns(event); resetAllMoveOpen()" onkeydown="setShift(event)"
     onkeyup=" unsetShift(event)">
-    <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset="">
+    <header class="main_header w_full"><img onclick="redirectToDashboard()" src="../../assets/icons/logo_icon.svg" alt="" srcset="">
         <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div>
     </header>
     <main class="w_full d_flex_sc_gl">
@@ -118,7 +120,7 @@
         </section>
 
 
-        <section onmousedown="toggleOpenId('dialog_wrapper')" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
+        <section onmousedown="toggleOpenId('dialog_wrapper'); deleteLastingToast()" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
             <section id="edit_board_dialog" current_dialog="false" dialog-type="board_settings" class="current_dialog dialog card d_flex_ss_gl f_d_c std_form w_full" onmousedown="stopProp(event)" onclick="stopProp(event)">
                 <header class="card_header_w_btn">
                     <h2 class="font_prime_color">Board Settings</h2>
@@ -129,11 +131,11 @@
                     <form class="">
                         <div error="false" id="board_settings_title_input_group"
                             class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full ">
-                            <label class="label_required" for="board_settings_title_input">Name</label>
+                            <label class="label_required" for="board_settings_title_input">Title</label>
 
                             <div class="checkbox_input_group w_full">
                                 <input onblur="validateBoardTitle(this)" value="" class="w_full"
-                                    placeholder="Name your board" type="text" id="board_settings_title_input" required>
+                                    placeholder="Rename your board" type="text" id="board_settings_title_input" required>
                                 <div class="checkbox_wrapper">
                                     <button type="button" onclick="setNewBoardTitle()"
                                         class="std_btn d_flex_cc_gs confirm_btn">
@@ -146,7 +148,7 @@
                                 </div>
                             </div>
                             
-                            <p class="error_label">Name must be at least 3 characters long.</p>
+                            <p class="error_label">Title must be between 3 an 64 characters long.</p>
                         </div>
                     </form>
                     <header class="non_edit_content card_header_w_btn">
@@ -362,10 +364,12 @@
                         <h3>Activity</h3>
                     </header>
 
-                    <article class="comment_wrapper d_flex_ss_gm w_full">
-                        <div class="profile_circle">MT</div>
-                        <textarea onkeyup="sendComment(event,this)" id="asdasd"
-                            class="font_white_color w_full"></textarea>
+                    <article class="comment_wrapper comment_wrapper_textarea d_flex_ss_gm w_full">
+                        <div id="comment_sender_profile">MT</div>
+                        <textarea onkeyup="sendComment(event,this)" id="comment_textarea"
+                            class="font_white_color w_full">
+                        </textarea>
+                        <img onclick="sendCommentDirectly()" src="../../assets/icons/send.svg" alt="" srcset="">
                     </article>
 
                     <section id="task_comment_list" class="d_flex_ss_gm f_d_c w_full">

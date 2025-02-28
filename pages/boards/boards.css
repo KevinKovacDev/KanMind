@@ -78,6 +78,10 @@ header {
     max-width: 48px;
 }
 
+#board_settings_title_input{
+    padding-right: 90px;
+}
+
 .board_list > li:hover .board_settings_btn{
     display: flex;
 }

@@ -4,123 +4,7 @@ let currentBoards = [];
 let currenTaskFilter = "assigned"
 let isLoadingTasks = false;
 
-function drawPieChart() {
-    getPieChartData()
-    let ticketData = getPieChartData()
-    const ctx = document.getElementById('ticketsChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['To-do', 'In progress', 'Review', 'Done'],
-            datasets: [{
-                data: ticketData,
-                backgroundColor: ['#8E44AD', '#F1C40F', '#E67E22', '#3498DB'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                            color: 'white',
-                            usePointStyle: true,
-                            pointStlye: 'circle',
-                     }
-                }
-            }
-        }
-    });
-};
 
-function getPieChartData(){
-    return [
-        currentAssignedTickets.filter(task => task.status == "to-do").length,
-        currentAssignedTickets.filter(task => task.status == "in-progress").length,
-        currentAssignedTickets.filter(task => task.status == "review").length,
-        currentAssignedTickets.filter(task => task.status == "done").length,
-    ]
-}
-
-function drawWaveChart(){
-        const ctx = document.getElementById("waveChart").getContext("2d");
-        const progress = 50;
-        const wavePlugin = {
-            id: 'waveProgress',
-            beforeDraw(chart) {
-                const { ctx, chartArea: { left, right, top, bottom }, scales: { x } } = chart;
-                const width = right - left;
-                const height = bottom - top;
-                const progressX = left + (width * (progress / 100));
-                
-                ctx.save();
-    
-                // Wave strokes
-                function drawWave(color, startX, endX) {
-                    ctx.beginPath();
-                    ctx.moveTo(startX, bottom - height / 2);
-                    const waveLength = 90;  // Wavelength
-                    const amplitude = 10;   // Wavehight
-                    
-                    for (let x = startX; x <= endX; x += 2) {
-                        const y = bottom - height / 2 + Math.sin((x / waveLength) * Math.PI * 2) * amplitude;
-                        ctx.lineTo(x, y);
-                    }
-                    
-                    ctx.lineWidth = 8;
-                    ctx.strokeStyle = color;
-                    ctx.stroke();
-                }
-    
-                drawWave("#FFD700", left, progressX);
-                drawWave("#345678", progressX, right);
-                
-                // Progress Text - Currently aligned in center
-                ctx.fillStyle = "#FFD700";
-                ctx.font = "16px Arial";
-                ctx.textAlign = "center";
-                ctx.fillText(progress + "%", left + width / 2, bottom - height / 2 - 20);
-    
-                // Numbers left and right
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "14px Arial";
-                ctx.textAlign = "left";
-                ctx.fillText("0", left, bottom);
-                ctx.textAlign = "right";
-                ctx.fillText("100", right, bottom);
-    
-                ctx.restore();
-            }
-        };
-    
-        new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Fortschritt"],
-                datasets: [{
-                    label: "Tasks Resolved",
-                    data: [progress],
-                    backgroundColor: "rgba(0, 0, 0, 0)", 
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                height: 100,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: { display: false },
-                    y: { display: false }
-                }
-            },
-            plugins: [wavePlugin]
-        });
-    ;
-}
 
 async function init(){
     await setDashboardData();
@@ -163,12 +47,18 @@ async function getReviewerTasks() {
 }
 
 function renderDashboard(){
+    renderWelcomeMessage();
     renderUrgentTask()
     drawWaveChart(); 
-    drawPieChart();
+    drawPieChart(currentAssignedTickets);
     renderBoardList();
     renderMemberAndTaskCount();
     renderTaskList();
+}
+
+function renderWelcomeMessage(){
+    let user = getAuthUser();
+    document.getElementById('welcome_message').innerHTML = `<img src="../../assets/icons/shake_hands.png" alt=""><span class="font_white_color"> Welcome </span>${user.fullname}!`
 }
 
 function renderBoardList(){
@@ -176,7 +66,6 @@ function renderBoardList(){
     currentBoards.forEach(board => {
         htmlText += `<li><a class="link" href="../../pages/board/?id=${board.id}">${board.title}</a></li>`
     });
-
     document.getElementById('dashboard_boardlist').innerHTML = htmlText;
 }
 
@@ -217,7 +106,7 @@ function getSingleTaskTemplate(task) {
         `<div class="profile_circle color_${getInitials(task.assignee.fullname)[0]}">${getInitials(task.assignee.fullname)}</div>` : 
         `<img src="../../assets/icons/face_icon.svg" alt="">`
 
-    return `        <tr>
+    return `        <tr onclick="redirectToBoardWTask(${task.id})">
                         <td class="title">${task.title}</td>
                         <td class="ws_nw">${task.due_date}</td>
                         <td>
@@ -233,6 +122,11 @@ function getSingleTaskTemplate(task) {
                             ${assigneeTemplate}
                         </td>
                     </tr>`
+}
+
+function redirectToBoardWTask(taskId){
+    let task = currentAssignedTickets.find(task => task.id == taskId)
+    window.location.href = `../../pages/board/?id=${task.board}&task_id=${task.id}`
 }
 
 function renderMemberAndTaskCount(){
@@ -275,5 +169,3 @@ function formatDate(isoDate) {
 function redirectToBoards(){
     window.location.href = "../../pages/boards/"
 }
-
-

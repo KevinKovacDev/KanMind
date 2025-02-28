@@ -21,11 +21,12 @@
     <script src="../../shared/js/api.js"></script>
     <script src="../../shared/js/header.js"></script>
     <script src="./boards.js"></script>
+    <script src="../../shared/js/board_settings.js"></script>
 
 </head>
 
 <body onload="setHeader(); getAndRenderBoardList()">
-    <header class="main_header w_full"><img src="../../assets/icons/logo_icon.svg" alt="" srcset="">
+    <header class="main_header w_full"><img onclick="redirectToDashboard()" src="../../assets/icons/logo_icon.svg" alt="" srcset="">
         <div id="head_content_right" class="d_flex_cc_gm head_content_right"></div>
     </header>
     <main class="w_full d_flex_sc_gl">
@@ -67,10 +68,10 @@
                 </header>
                 <div error="false" id="board_title_input_group"
                     class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full">
-                    <label class="label_required" for="board_title_input">Name</label>
+                    <label class="label_required" for="board_title_input">Title</label>
                     <input onblur="validateBoardTitle(this)" value="" class="w_full" placeholder="Name your board"
                         type="text" id="board_title_input" required>
-                    <p class="error_label">Name must be at least 3 characters long.</p>
+                    <p class="error_label">Title must be between 3 an 64 characters long.</p>
                 </div>
 
                 <section class="d_flex_ss_gl f_d_c w_full">
@@ -115,7 +116,7 @@
                     <form class="">
                         <div error="false" id="board_settings_title_input_group"
                             class="form_group_wo_icon_w_label d_flex_ss_gs f_d_c w_full ">
-                            <label class="label_required" for="board_settings_title_input">Name</label>
+                            <label class="label_required" for="board_settings_title_input">Title</label>
 
                             <div class="checkbox_input_group w_full">
                                 <input onblur="validateBoardTitle(this)" value="" class="w_full"
@@ -132,7 +133,7 @@
                                 </div>
                             </div>
 
-                            <p class="error_label">Name must be at least 3 characters long.</p>
+                            <p class="error_label">Title must be between 3 an 64 characters long.</p>
                         </div>
                     </form>
                     <header class="non_edit_content card_header_w_btn">
