@@ -92,6 +92,7 @@ function validateLoginPW(element) {
     let valid = element.value.trim().length > 0;
     setError(!valid, element.id + "_group")
 }
+
 function validateEmail(element) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let valid = emailRegex.test(element.value.trim())

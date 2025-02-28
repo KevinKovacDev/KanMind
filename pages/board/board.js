@@ -549,7 +549,7 @@ async function openBoardSettingsDialog(id) {
         toggleOpenId('dialog_wrapper');
         renderBoardSettingsDialog();
     } else {
-        console.error("Board not found");
+        showToastMessage(true, ["Board not found."])
     }
 }
 
@@ -597,7 +597,6 @@ function boardSettingsInviteMember(){
 async function boardSettingsCheckMailAddress(element){
     let mail = element.value.trim()
     let resp = await checkMailAddress(mail)
-    console.log(resp)
     if(resp){
         currentSettingsBoard.members.push(resp)
         renderBoardSettingsMemberList()
@@ -644,7 +643,6 @@ async function setNewBoardTitle(){
 
 async function updateBoard(data){
     let response = await patchData(BOARDS_URL + currentSettingsBoard.id + "/", data);
-    console.log(response.data)
     if (!response.ok) {
         let errorArr = extractErrorMessages(response.data)
         showToastMessage(true, errorArr)
@@ -657,7 +655,7 @@ function openBoardDeleteToast(){
             <article class="font_ d_flex_cc_gl">
                 <div class=" d_flex_ss_gm f_d_c">
                     <h3>Delete Board</h3>
-                    <p>Are you sure you want to delete the board Event Planning (Clients)?</p>
+                    <p>Are you sure you want to delete the board ${currentSettingsBoard.title}?</p>
                 </div>
                 <div class="font_sec_color d_flex_cc_gm f_d_c">
                     <button onclick="deleteBoard()" class="std_btn btn_prime d_flex_sc_gs">
@@ -677,7 +675,6 @@ async function deleteBoard(){
     if(response.ok){
         window.location.href = "../../pages/boards/"
     } else {
-        console.log(response.data)
         let errorArr = extractErrorMessages(response.data)
         showToastMessage(true, errorArr)
     }

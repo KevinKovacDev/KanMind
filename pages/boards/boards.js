@@ -96,7 +96,8 @@ async function boardCreateSubmit(event) {
 }
 
 async function createBoard(){
-    let response = await postData(BOARDS_URL, currentCreateBoard);
+    let boardMemberIds = currentCreateBoard.members.map(member => member.id)
+    let response = await postData(BOARDS_URL, {"title": currentCreateBoard.title, "members": boardMemberIds});
     if (!response.ok) {
         let errorArr = extractErrorMessages(response.data)
         showToastMessage(true, errorArr)
@@ -222,7 +223,6 @@ function boardSettingsInviteMember(){
 async function boardSettingsCheckMailAddress(element){
     let mail = element.value.trim()
     let resp = await checkMailAddress(mail)
-    console.log(resp)
     if(resp){
         currentSettingsBoard.members.push(resp)
         renderBoardSettingsMemberList()
@@ -274,7 +274,7 @@ function openBoardDeleteToast(){
             <article class="font_ d_flex_cc_gl">
                 <div class=" d_flex_ss_gm f_d_c">
                     <h3>Delete Board</h3>
-                    <p>Are you sure you want to delete the board Event Planning (Clients)?</p>
+                    <p>Are you sure you want to delete the board  ${currentSettingsBoard.title}?</p>
                 </div>
                 <div class="font_sec_color d_flex_cc_gm f_d_c">
                     <button onclick="deleteBoard()" class="std_btn btn_prime d_flex_sc_gs">
