@@ -107,9 +107,6 @@
                 <section class="board_column card">
                     <header class="card_header_w_btn">
                         <h3 class="font_prime_color">Done</h3>
-                        <button onclick="openCreateTaskDialog('done')" class="close_btn d_flex_cc_gs">
-                            <img src="../../assets/icons/add_yellow.svg" alt="">
-                        </button>
                     </header>
                     <ul class="column_content" id="done_column">
 
@@ -161,15 +158,15 @@
                     </header>
                 </article>
                 <article class="d_flex_cs_gm f_d_c w_full">
-                    <h3 class="font_prime_color">Invite members</h3>
-                    <p class="font_white_color">Add the email addresses of the members you wish to invite to your
+                    <h3 class="font_prime_color">Add members</h3>
+                    <p class="font_white_color">Add the email addresses of the members you wish to add to your
                         board</p>
                     <div onclick="stopProp(event)" error="false" id="board_settings_email_input_group"
                         class="form_group_w_icon_wo_label w_full form_group_invite">
                         <input id="board_settings_email_input" type="text" required>
                         <label for="board_settings_email_input">E-Mail</label>
                         <button type="button" onclick="boardSettingsInviteMember()"
-                            class="std_btn btn_prime d_flex_cc_gl">Invite</button>
+                            class="std_btn btn_prime d_flex_cc_gl">Add</button>
                         <p class="error_label" id="email_error_label">Please enter a valid email address.</p>
                     </div>
                 </article>
@@ -177,7 +174,7 @@
                 <div class="divider_yellow "></div>
 
                 <article class="w_full font_white_color d_flex_ss_gl f_d_c">
-                    <h3>Invited members</h3>
+                    <h3>Added members</h3>
                     <ul id="board_settings_member_list" class="member_list">
                     </ul>
                 </article>
@@ -366,9 +363,7 @@
 
                     <article class="comment_wrapper comment_wrapper_textarea d_flex_ss_gm w_full">
                         <div id="comment_sender_profile">MT</div>
-                        <textarea onkeyup="sendComment(event,this)" id="comment_textarea"
-                            class="font_white_color w_full">
-                        </textarea>
+                        <textarea onkeyup="sendComment(event,this)" id="comment_textarea" class="font_white_color w_full"></textarea>
                         <img onclick="sendCommentDirectly()" src="../../assets/icons/send.svg" alt="" srcset="">
                     </article>
 

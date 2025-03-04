@@ -148,7 +148,7 @@ function openCreateTaskDialog(status) {
 
 function openEditTaskDialog() {
     changeCurrentDialog("create_edit_task_dialog")
-    toggleOpenId('dialog_wrapper')
+
     fillEditCreateTaskDialog('edit')
 }
 

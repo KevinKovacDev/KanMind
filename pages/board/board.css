@@ -211,11 +211,10 @@ main {
 }
 
 .comment_wrapper_textarea > img{
-    display: none;
     position: absolute;
     cursor: pointer;
-    bottom: 0;
-    right: 0;
+    bottom: 8px;
+    right: 8px;
     margin: var(--form-input-pad);
     width: 24px;
 }
@@ -229,10 +228,6 @@ main {
 }
 
 @media (hover: none)  {
-    .comment_wrapper_textarea > img{
-        display: flex;
-    }
-
     .comment_wrapper .delete_btn{
         display: block;
     }

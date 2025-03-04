@@ -328,8 +328,8 @@ textarea {
     width: 100%;
     border: none;
     background-color: transparent;    
-    justify-content: end;
     padding-right: 16px;
+    display: block;
 }
 
 .custom_datepicker input:active,
