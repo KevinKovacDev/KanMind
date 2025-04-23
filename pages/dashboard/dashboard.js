@@ -49,7 +49,8 @@ async function getReviewerTasks() {
 function renderDashboard(){
     renderWelcomeMessage();
     renderUrgentTask()
-    drawWaveChart(); 
+    let progress = currentAssignedTickets.filter(task => task.status == "done" ).length / currentAssignedTickets.length * 100;
+    drawWaveChart(progress); 
     drawPieChart(currentAssignedTickets);
     renderBoardList();
     renderMemberAndTaskCount();

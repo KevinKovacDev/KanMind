@@ -43,9 +43,9 @@ function getPieChartData(currentAssignedTickets){
     ]
 }
 
-function drawWaveChart(){
+function drawWaveChart(progress){
         const ctx = document.getElementById("waveChart").getContext("2d");
-        const progress = 50;
+        const progress = progress;
         const wavePlugin = {
             id: 'waveProgress',
             beforeDraw(chart) {
