@@ -117,6 +117,9 @@ function renderBoardList(){
     renderBoardList.forEach(board => {
         htmltext += getBoardlistEntrieTemplate(board);
     });
+    if(renderBoardList.length <= 0){
+        htmltext = `<h3 class="font_prime_color">...No boards available...</h3>`
+    }
     document.getElementById("board_list").innerHTML = htmltext;
 }
 

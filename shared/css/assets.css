@@ -632,6 +632,12 @@
     flex-direction: column;
 }
 
+@media screen and (max-width: 480px) {
+    .toast_msg_right article{
+        flex-direction: column !important;
+    }
+}
+
 .toast_msg_right ul {
     flex: 1;
     padding: 0px;

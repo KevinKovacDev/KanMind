@@ -121,7 +121,7 @@
             <section id="edit_board_dialog" current_dialog="false" dialog-type="board_settings" class="current_dialog dialog card d_flex_ss_gl f_d_c std_form w_full" onmousedown="stopProp(event)" onclick="stopProp(event)">
                 <header class="card_header_w_btn">
                     <h2 class="font_prime_color">Board Settings</h2>
-                    <button onclick="toggleOpenId('dialog_wrapper')" class="close_btn"><img
+                    <button onclick="toggleOpenId('dialog_wrapper'); deleteLastingToast()" class="close_btn"><img
                             src="../../assets/icons/close_white.svg" alt=""></button>
                 </header>
                 <article edit="false" class="w_full" id="board_settings_title_group">
@@ -314,7 +314,7 @@
                         <button onclick="openEditTaskDialog()" class="close_btn d_flex_cc_gs">
                             <img src="../../assets/icons/edit.svg" alt="">
                         </button>
-                        <button onclick="toggleOpenId('dialog_wrapper')" class="close_btn d_flex_cc_gs">
+                        <button onclick="toggleOpenId('dialog_wrapper'); deleteLastingToast()" class="close_btn d_flex_cc_gs">
                             <img src="../../assets/icons/close_white.svg" alt="">
                         </button>
                     </div>

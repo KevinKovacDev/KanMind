@@ -67,6 +67,9 @@ function renderBoardList(){
     currentBoards.forEach(board => {
         htmlText += `<li><a class="link" href="../../pages/board/?id=${board.id}">${board.title}</a></li>`
     });
+    if(currentBoards.length <= 0){
+        htmlText = `<h3 class="font_prime_color">No boards available</h3>`
+    }
     document.getElementById('dashboard_boardlist').innerHTML = htmlText;
 }
 
@@ -94,12 +97,18 @@ async function renderTaskList(){
         renderList = currentAssignedTickets
     }
 
+    document.getElementById('dashboard_tasklist').innerHTML = getTaskListTemplate(renderList);
+}
+
+function getTaskListTemplate(renderList){
     let htmlText = "";
     renderList.forEach(task => {
         htmlText += getSingleTaskTemplate(task)
     });
-
-    document.getElementById('dashboard_tasklist').innerHTML = htmlText;
+    if(renderList.length <= 0){
+        htmlText = `<h3 class="font_prime_color">No tasks available</h3>`
+    }
+    return htmlText;
 }
 
 function getSingleTaskTemplate(task) {
