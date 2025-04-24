@@ -84,7 +84,7 @@ function drawWaveChart(progress) {
             ctx.fillStyle = "#FFD700";
             ctx.font = "16px Arial";
             ctx.textAlign = "center";
-            let text = progressIsValid ? progress + "%" : "No Tasks found";
+            let text = progressIsValid ? progress.toFixed(2) + "%" : "No Tasks found";
             ctx.fillText(text, left + width / 2, bottom - height / 2 - 20);
 
             // Numbers left and right

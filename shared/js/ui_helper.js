@@ -11,6 +11,13 @@ function closeDialog(id) {
     dialogref.classList.add('d_none');
 }
 
+function resetCurrentDialogs() {
+    const dialogElements = document.querySelectorAll('[current_dialog="true"]');
+    dialogElements.forEach(el => {
+      el.setAttribute('current_dialog', 'false');
+    });
+}
+
 function toggleOpen(element) {
     const isOpen = element.getAttribute('open') === 'true';
     element.setAttribute('open', !isOpen);

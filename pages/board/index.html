@@ -117,7 +117,7 @@
         </section>
 
 
-        <section onmousedown="toggleOpenId('dialog_wrapper'); deleteLastingToast()" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
+        <section onmousedown="toggleOpenId('dialog_wrapper'); deleteLastingToast(); resetCurrentDialogs()" id="dialog_wrapper" class="dialog_wrapper pad_l" open="false">
             <section id="edit_board_dialog" current_dialog="false" dialog-type="board_settings" class="current_dialog dialog card d_flex_ss_gl f_d_c std_form w_full" onmousedown="stopProp(event)" onclick="stopProp(event)">
                 <header class="card_header_w_btn">
                     <h2 class="font_prime_color">Board Settings</h2>
