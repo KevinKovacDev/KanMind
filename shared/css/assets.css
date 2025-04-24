@@ -173,7 +173,8 @@
 .color_C,
 .color_D,
 .color_E,
-.color_F .color_G {
+.color_F,
+.color_G {
     background-color: var(--font-prime-color);
     color: var(--font_dark_color);
 }
